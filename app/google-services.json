@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "405769022219",
+    "firebase_url": "https://udomime-f87ee.firebaseio.com",
+    "project_id": "udomime-f87ee",
+    "storage_bucket": "udomime-f87ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405769022219:android:4bf34e560646d55e",
+        "android_client_info": {
+          "package_name": "com.example.simic.udomime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405769022219-3f318efj4753q12akt3bljdi3rcjvbef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmrEMJtqaqz9YSHwjKODe78uMtGTQBrog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
