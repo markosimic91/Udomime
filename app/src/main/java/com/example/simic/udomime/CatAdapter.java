@@ -1,10 +1,12 @@
 package com.example.simic.udomime;
 
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,10 +25,11 @@ public class CatAdapter extends BaseAdapter {
 
     private ArrayList<Cat> mCatList;
 
-    public CatAdapter(ArrayList<Cat> mCatList) {
+    public CatAdapter(FragmentActivity activity, ArrayList<Cat> mCatList) {
         this.mCatList = mCatList;
         this.mCatList.addAll(mCatList);
     }
+
 
     @Override
     public int getCount() {
@@ -62,24 +65,24 @@ public class CatAdapter extends BaseAdapter {
                 .load(cat.getmCatPicure())
                 .fit()
                 .centerCrop()
-                .into(holder.ivDogPic);
+                .into(holder.ivCatPic);
 
-        holder.tvDogContact.setText(cat.getmCatDescription());
-        holder.tvDogName.setText(cat.getmCatName());
-        holder.tvDogDescription.setText(cat.getmCatDescription());
+        holder.tvCatContact.setText(String.valueOf(cat.getmCatContact()));
+        holder.tvCatName.setText(cat.getmCatName());
+        holder.tvCatDescription.setText(cat.getmCatDescription());
 
         return convertView;
     }
 
     static class CatViewAdapter {
         @BindView(R.id.ivCatPic)
-        ImageView ivDogPic;
+        ImageView ivCatPic;
         @BindView(R.id.tvCatName)
-        TextView tvDogName;
+        TextView tvCatName;
         @BindView(R.id.tvCatDescription)
-        TextView tvDogDescription;
+        TextView tvCatDescription;
         @BindView(R.id.tvCatContact)
-        TextView tvDogContact;
+        TextView tvCatContact;
 
         public CatViewAdapter(View view) {
             ButterKnife.bind(this, view);

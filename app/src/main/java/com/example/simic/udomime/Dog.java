@@ -8,9 +8,10 @@ public class Dog {
     private String mDogPicure;
     private String mDogName;
     private String mDogDescription;
-    private String mDogContact;
+    private int mDogContact;
 
-    public Dog(String mDogPicure, String mDogName, String mDogDescription, String mDogContact) {
+
+    public Dog(String mDogPicure, String mDogName, String mDogDescription, int mDogContact) {
         this.mDogPicure = mDogPicure;
         this.mDogName = mDogName;
         this.mDogDescription = mDogDescription;
@@ -29,7 +30,7 @@ public class Dog {
         return mDogDescription;
     }
 
-    public String getmDogContact() {
+    public int getmDogContact() {
         return mDogContact;
     }
 }

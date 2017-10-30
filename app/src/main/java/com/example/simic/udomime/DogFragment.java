@@ -36,9 +36,26 @@ public class DogFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.cat_fragment,container,false);
+        View view = inflater.inflate(R.layout.dog_fragment,container,false);
+        ArrayList<Dog> listDogs = getDogs();
+        ListView lvDogs = (ListView) view.findViewById(R.id.lvDogs);
+        lvDogs.setAdapter(new DogAdapter(getActivity(),listDogs));
+        return view;
     }
 
+    private ArrayList<Dog> getDogs() {
+        ArrayList<Dog> dogList = new ArrayList<>();
 
+        String[] name = getResources().getStringArray(R.array.dog);
+        String[] image = getResources().getStringArray(R.array.dogimage);
+        int[] contact = getResources().getIntArray(R.array.dogcontact);
+        String[] desription = getResources().getStringArray(R.array.dogdesription);
+
+        for (int i = 0; i<name.length;i++){
+            dogList.add(new Dog(image[i],name[i],desription[i],contact[i]));
+        }
+
+        return dogList;
+    }
 
 }

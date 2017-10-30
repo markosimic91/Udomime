@@ -28,8 +28,14 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -37,10 +43,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback{
+public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener{
 
     private static final int PICK_IMAGE = 100;
-
+    private static String ANIMAL = "animal";
+    private DatabaseReference mDatabaseReference;
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
@@ -59,11 +66,15 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_animal);
         ButterKnife.bind(this);
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(ANIMAL);
+        this.mDatabaseReference.addValueEventListener(this);
         this.handleEnterEditText();
         this.spinnerSetup();
         this.googleMap();
+
     }
 
+    //region GoogleMap
     private void googleMap() {
         this.mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.GoogleMap);
         this.mMapFragment.getMapAsync(this);
@@ -96,26 +107,42 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback{
         this.mGoogleMap.setMyLocationEnabled(true);
 
     }
+    //endregion
 
+    //region Spinner
     private void spinnerSetup() {
         String [] animals = new String []{getString(R.string.select_dog),getString(R.string.select_cat)};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,animals);
         sSelectAnimal.setAdapter(adapter);
     }
+    //endregion
 
+    //region EditTextEnter
     private void handleEnterEditText() {
         etAnimalContact.setInputType(InputType.TYPE_CLASS_TEXT);
         etAnimalName.setInputType(InputType.TYPE_CLASS_TEXT);
         etAnimalDesription.setInputType(InputType.TYPE_CLASS_TEXT);
     }
+    //endregion
 
-
+    //region GetImage
     @OnClick(R.id.ibAnimalPicure)
     public void openGallery(){
         Intent openGallery = new Intent(Intent.ACTION_PICK);
         openGallery.setType("image/*");
         startActivityForResult(openGallery, PICK_IMAGE);
     }
+    //endregion
+
+    @OnClick(R.id.bFinish)
+    public void animalFinished(){
+        String id = this.mDatabaseReference.push().getKey();
+        String name = this.etAnimalName.getText().toString();
+        String description = this.etAnimalDesription.getText().toString();
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode , int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -132,6 +159,21 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback{
 
         }
     }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+
+    private void uploadImage(Bitmap bitmap){
+
+    }
+
 
 
 }

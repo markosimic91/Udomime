@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ivAnimalImage"
         android:text="Location:"/>
+
     <fragment
         android:id="@+id/GoogleMap"
         android:layout_width="match_parent"

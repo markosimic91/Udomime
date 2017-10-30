@@ -8,9 +8,9 @@ public class Cat {
     private String mCatPicure;
     private String mCatName;
     private String mCatDescription;
-    private String mCatContact;
+    private int mCatContact;
 
-    public Cat(String mCatPicure, String mCatName, String mCatDescription, String mCatContact) {
+    public Cat(String mCatPicure, String mCatName, String mCatDescription, int mCatContact) {
         this.mCatPicure = mCatPicure;
         this.mCatName = mCatName;
         this.mCatDescription = mCatDescription;
@@ -29,7 +29,7 @@ public class Cat {
         return mCatDescription;
     }
 
-    public String getmCatContact() {
+    public int getmCatContact() {
         return mCatContact;
     }
 }

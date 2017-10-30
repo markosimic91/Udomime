@@ -1,10 +1,12 @@
 package com.example.simic.udomime;
 
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -22,10 +24,11 @@ import butterknife.ButterKnife;
 public class DogAdapter extends BaseAdapter {
     private ArrayList<Dog> mDogList;
 
-    public DogAdapter(ArrayList<Dog> mDogList) {
+    public DogAdapter(FragmentActivity activity, ArrayList<Dog> mDogList) {
         this.mDogList = mDogList;
         this.mDogList.addAll(mDogList);
     }
+
 
     @Override
     public int getCount() {
@@ -63,7 +66,7 @@ public class DogAdapter extends BaseAdapter {
                 .centerCrop()
                 .into(holder.ivDogPic);
 
-        holder.tvDogContact.setText(dog.getmDogContact());
+        holder.tvDogContact.setText(String.valueOf(dog.getmDogContact()));
         holder.tvDogName.setText(dog.getmDogName());
         holder.tvDogDescription.setText(dog.getmDogDescription());
 

@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         this.loadFragments();
 
-
-
     }
 
     private void loadFragments() {
