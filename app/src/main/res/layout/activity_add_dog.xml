@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_margin="20dp">
+
+        <EditText
+            android:id="@+id/etDogName"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:hint="Animal Name"/>
+        <EditText
+            android:id="@+id/etDogContact"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etDogName"
+            android:layout_marginTop="22dp"
+            android:hint="Contact"/>
+
+        <EditText
+            android:id="@+id/etDogDesription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_below="@id/etDogContact"
+            android:hint="Description:"/>
+
+        <TextView
+            android:id="@+id/tvDogPic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etDogDesription"
+            android:layout_marginTop="22dp"
+            android:text="Add animal picure:"/>
+
+        <ImageButton
+            android:id="@+id/ibAddDog"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/add"
+            android:layout_alignTop="@+id/tvDogPic"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/ivDogImage"
+            android:layout_below="@id/ibAddDog"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivDogImage"
+            android:text="Location:"/>
+
+        <fragment
+            android:id="@+id/GoogleMap"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/tvLocation"
+            android:name="com.google.android.gms.maps.MapFragment"
+            tools:layout="@layout/activity_add_dog" />
+
+        <Button
+            android:id="@+id/bFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish"
+            android:layout_below="@+id/GoogleMap"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/Space"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/bFinish"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/Space"/>
+
+    </RelativeLayout>
+</ScrollView>

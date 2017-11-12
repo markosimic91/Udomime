@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class DogAdapter extends BaseAdapter {
     private ArrayList<Dog> mDogList;
 
-    public DogAdapter(FragmentActivity activity, ArrayList<Dog> mDogList) {
+    public DogAdapter(ArrayList<Dog> mDogList) {
         this.mDogList = mDogList;
         this.mDogList.addAll(mDogList);
     }

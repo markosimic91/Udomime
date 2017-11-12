@@ -1,24 +1,21 @@
 package com.example.simic.udomime;
 
-import android.*;
-import android.Manifest;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.widget.ArrayAdapter;
+import android.util.Base64;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -28,48 +25,59 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener{
+public class AddDog extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener {
+
 
     private static final int PICK_IMAGE = 100;
-    private static String ANIMAL = "animal";
+    private static String DOG = "dog";
     private DatabaseReference mDatabaseReference;
+    private StorageReference mStorageRef;
+    private Uri filePath;
+
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
     private GoogleMap.OnMapClickListener mCustomMapClickListener;
 
-    @BindView(R.id.ibAnimalPicure) ImageButton ibAnimalPicure;
-    @BindView(R.id.etAnimalName) EditText etAnimalName;
-    @BindView(R.id.etAnimalDescription) EditText etAnimalDesription;
-    @BindView(R.id.etAnimalContact) EditText etAnimalContact;
-    @BindView(R.id.ivAnimalImage) ImageView ivAnimalImage;
-    @BindView(R.id.sSelectAnimal) Spinner sSelectAnimal;
-
+    @BindView(R.id.ibAddDog) ImageButton ibAddDog;
+    @BindView(R.id.etDogName) EditText etDogName;
+    @BindView(R.id.etDogDesription) EditText etDogDesription;
+    @BindView(R.id.etDogContact) EditText etDogContact;
+    @BindView(R.id.ivDogImage) ImageView ivDogImage;
+    @BindView(R.id.bFinish) Button bFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_animal);
+        setContentView(R.layout.activity_add_dog);
         ButterKnife.bind(this);
-        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(ANIMAL);
+
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(DOG);
         this.mDatabaseReference.addValueEventListener(this);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
+
         this.handleEnterEditText();
-        this.spinnerSetup();
         this.googleMap();
 
     }
@@ -99,7 +107,7 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,V
         uiSettings.setZoomGesturesEnabled(true);
         this.mGoogleMap.setOnMapClickListener(this.mCustomMapClickListener);
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!=
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!=
                 PackageManager.PERMISSION_GRANTED){
             // TODO: Consider calling  ActivityCompat#requestPermissions
             // See the last example on how to do this.
@@ -109,24 +117,16 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,V
     }
     //endregion
 
-    //region Spinner
-    private void spinnerSetup() {
-        String [] animals = new String []{getString(R.string.select_dog),getString(R.string.select_cat)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,animals);
-        sSelectAnimal.setAdapter(adapter);
-    }
-    //endregion
-
     //region EditTextEnter
     private void handleEnterEditText() {
-        etAnimalContact.setInputType(InputType.TYPE_CLASS_TEXT);
-        etAnimalName.setInputType(InputType.TYPE_CLASS_TEXT);
-        etAnimalDesription.setInputType(InputType.TYPE_CLASS_TEXT);
+        etDogDesription.setInputType(InputType.TYPE_CLASS_TEXT);
+        etDogName.setInputType(InputType.TYPE_CLASS_TEXT);
+        etDogContact.setInputType(InputType.TYPE_CLASS_TEXT);
     }
     //endregion
 
     //region GetImage
-    @OnClick(R.id.ibAnimalPicure)
+    @OnClick(R.id.ibAddDog)
     public void openGallery(){
         Intent openGallery = new Intent(Intent.ACTION_PICK);
         openGallery.setType("image/*");
@@ -134,31 +134,58 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,V
     }
     //endregion
 
-    @OnClick(R.id.bFinish)
-    public void animalFinished(){
-        String id = this.mDatabaseReference.push().getKey();
-        String name = this.etAnimalName.getText().toString();
-        String description = this.etAnimalDesription.getText().toString();
-
-    }
-
-
+    //region ImageToImageView
     @Override
-    protected void onActivityResult(int requestCode , int resultCode,Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-            try{
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                ivAnimalImage.setImageBitmap(selectedImage);
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
-            }
-
-        }
+        Uri image = data.getData();
+        ivDogImage.setImageURI(image);
     }
+    //endregion
+
+    @OnClick(R.id.bFinish)
+    public void saveAnimal(){
+
+        String id = this.mDatabaseReference.push().getKey();
+        String name = this.etDogName.getText().toString();
+        String contact = this.etDogContact.getText().toString();
+        String desription = this.etDogDesription.getText().toString();
+        String image = this.ivDogImage.toString();
+
+        Dog dog = new Dog(id,image,name,desription,contact);
+
+        this.mDatabaseReference.child(id).setValue(dog);
+        this.etDogName.setText("");
+        this.etDogContact.setText("");
+        this.etDogDesription.setText("");
+
+
+    }
+
+    private void uploadImage(Bitmap bitmap){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl(getString(R.string.firebaseURL));
+        StorageReference mountainImagesRef = storageReference.child("images/cats");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+            }
+        });
+
+    }
+
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -169,11 +196,5 @@ public class AddAnimal extends AppCompatActivity implements OnMapReadyCallback,V
     public void onCancelled(DatabaseError databaseError) {
 
     }
-
-    private void uploadImage(Bitmap bitmap){
-
-    }
-
-
 
 }

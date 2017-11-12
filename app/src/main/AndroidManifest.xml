@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.simic.udomime">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,19 +21,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddAnimal">
-
-        </activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-            />
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDHrumDYqecIktzdzSj1f010uiW1K1A64M"
-            />
+            android:value="AIzaSyDHrumDYqecIktzdzSj1f010uiW1K1A64M" />
 
+        <activity android:name=".AddDogCat" />
+        <activity android:name=".AddDog" />
+        <activity android:name=".AddCat" />
+        <activity android:name=".More"></activity>
     </application>
 
 </manifest>

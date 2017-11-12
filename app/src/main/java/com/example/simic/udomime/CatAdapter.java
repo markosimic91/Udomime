@@ -1,6 +1,7 @@
 package com.example.simic.udomime;
 
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class CatAdapter extends BaseAdapter {
 
     private ArrayList<Cat> mCatList;
 
-    public CatAdapter(FragmentActivity activity, ArrayList<Cat> mCatList) {
+    public CatAdapter(ArrayList<Cat> mCatList) {
         this.mCatList = mCatList;
         this.mCatList.addAll(mCatList);
     }

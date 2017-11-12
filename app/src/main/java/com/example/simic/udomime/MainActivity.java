@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addAnimal(MenuItem item) {
-        Intent addAnimal = new Intent(MainActivity.this, AddAnimal.class);
+        Intent addAnimal = new Intent(MainActivity.this, AddDogCat.class);
         startActivity(addAnimal);
 
     }
