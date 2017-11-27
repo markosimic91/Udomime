@@ -1,23 +1,21 @@
 package com.example.simic.udomime;
 
 import android.*;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,7 +23,6 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,20 +34,24 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.internal.Utils;
 
-public class AddCat extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener {
-
-
+public class AddCat extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener,View.OnClickListener {
+    
     private static final int PICK_IMAGE = 100;
-    private static String CAT = "cat";
-
+    private static String CAT = "Cat";
+    private Uri mImageUri = null;
     private DatabaseReference mDatabaseReference;
-    StorageReference mStorageReference;
+    private StorageReference mStorage;
+    private ProgressDialog mProgress;
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
@@ -62,20 +63,111 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
     @BindView(R.id.etCatContact) EditText etCatContact;
     @BindView(R.id.ivCatImage) ImageView ivCatImage;
 
-    @BindView(R.id.bFinish)
-    Button bFinish;
+    @BindView(R.id.bFinish) Button bFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cat);
         ButterKnife.bind(this);
-        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(CAT);
+        mProgress = new ProgressDialog(this);
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(CAT);
         this.mDatabaseReference.addValueEventListener(this);
-        this.mStorageReference = FirebaseStorage.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference();
 
+        bFinish.setOnClickListener(this);
         this.handleEnterEditText();
+
         this.googleMap();
+
+        //region OnClickLiseners
+        ibAddCat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,PICK_IMAGE);
+            }
+        });
+
+        bFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                publishCat();
+            }
+        });
+
+        //endregion
+
+    }
+
+    //region UploadMethod
+    private void publishCat() {
+
+        mProgress.setMessage("Uploading...");
+        mProgress.show();
+
+
+        final String name = etCatName.getText().toString();
+        final String desription = etCatDesription.getText().toString();
+        final String contact = etCatContact.getText().toString();
+
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
+
+            StorageReference filePath = mStorage.child("Cats").child(mImageUri.getLastPathSegment());
+
+            filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                    DatabaseReference newCat = mDatabaseReference.push();
+
+                    newCat.child("name").setValue(name);
+                    newCat.child("desription").setValue(desription);
+                    newCat.child("contact").setValue(contact);
+                    newCat.child("image").setValue(downloadUrl.toString());
+
+                    mProgress.dismiss();
+
+                    startActivity(new Intent(AddCat.this,MainActivity.class));
+                }
+            });
+
+        }
+    }
+    //endregion
+
+    //region PutImageToImageView
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE && resultCode == RESULT_OK){
+
+            mImageUri = data.getData();
+
+            ivCatImage.setImageURI(mImageUri);
+
+        }
+    }
+    //endregion
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
 
     }
 
@@ -121,76 +213,4 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
         etCatDesription.setInputType(InputType.TYPE_CLASS_TEXT);
     }
     //endregion
-
-    //region GetImage
-    @OnClick(R.id.ibAddCat)
-    public void openGallery(){
-        Intent openGallery = new Intent(Intent.ACTION_PICK);
-        openGallery.setType("image/*");
-        startActivityForResult(openGallery, PICK_IMAGE);
-    }
-    //endregion
-
-    @OnClick(R.id.bFinish)
-    public void saveAnimal(){
-
-        String id = this.mDatabaseReference.push().getKey();
-        String name = this.etCatName.getText().toString();
-        String contact = this.etCatContact.getText().toString();
-        String desription = this.etCatDesription.getText().toString();
-        String  image = this.ivCatImage.setImageURI();
-
-        BitmapDrawable drawable = (BitmapDrawable) ivCatImage.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-
-        Dog dog = new Dog(id,image,name,desription,contact);
-
-        this.mDatabaseReference.child(id).setValue(dog);
-        this.etCatName.setText("");
-        this.etCatContact.setText("");
-        this.etCatDesription.setText("");
-        this.ivCatImage.setImageBitmap(bitmap);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Uri image = data.getData();
-        ivCatImage.setImageURI(image);
-    }
-
-    private void uploadImage(Bitmap bitmap){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReferenceFromUrl(getString(R.string.firebaseURL));
-        StorageReference mountainImagesRef = storageReference.child("images/cats");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
-        byte[] data = baos.toByteArray();
-        UploadTask uploadTask = mountainImagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            }
-        });
-
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
 }

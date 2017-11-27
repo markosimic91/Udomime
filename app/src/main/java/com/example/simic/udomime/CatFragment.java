@@ -30,11 +30,9 @@ import butterknife.ButterKnife;
  */
 
 public class CatFragment  extends Fragment{
+
     public static final  String TITLE = "Mačka";
 
-    private FirebaseDatabase mFirebaseDatabase;
-
-    @BindView(R.id.lvCats) ListView lvCats;
 
     public CatFragment() {
     }
@@ -43,24 +41,9 @@ public class CatFragment  extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       lvCats.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               if (position == 1){
-                   Intent intent = new Intent(view.getContext(),More.class);
-                   startActivityForResult(intent,0);
-               }
 
-           }
-
-           @Override
-           public void onNothingSelected(AdapterView<?> parent) {
-
-           }
-       });
     }
 
-    @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cat_fragment,container,false);

@@ -31,7 +31,9 @@
         <activity android:name=".AddDogCat" />
         <activity android:name=".AddDog" />
         <activity android:name=".AddCat" />
-        <activity android:name=".More"></activity>
+        <activity android:name=".More">
+
+        </activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -44,43 +45,101 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddDog extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener {
+public class AddDog extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener,View.OnClickListener {
 
 
     private static final int PICK_IMAGE = 100;
-    private static String DOG = "dog";
+    private static String DOG = "Dog";
     private DatabaseReference mDatabaseReference;
-    private StorageReference mStorageRef;
-    private Uri filePath;
-
+    private StorageReference mStorage;
+    private ProgressDialog mProgress;
+    private Uri mImageUri = null;
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
     private GoogleMap.OnMapClickListener mCustomMapClickListener;
 
+
+    //region BindView
     @BindView(R.id.ibAddDog) ImageButton ibAddDog;
     @BindView(R.id.etDogName) EditText etDogName;
     @BindView(R.id.etDogDesription) EditText etDogDesription;
     @BindView(R.id.etDogContact) EditText etDogContact;
     @BindView(R.id.ivDogImage) ImageView ivDogImage;
     @BindView(R.id.bFinish) Button bFinish;
+    //endregion
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dog);
         ButterKnife.bind(this);
-
+        mProgress = new ProgressDialog(this);
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(DOG);
         this.mDatabaseReference.addValueEventListener(this);
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference();
 
-
-
+        bFinish.setOnClickListener(this);
         this.handleEnterEditText();
         this.googleMap();
 
+        //region OnClickLiseners
+        bFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                publishDog();
+            }
+        });
+
+        ibAddDog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,PICK_IMAGE);
+            }
+        });
+        //endregion
+
     }
+    //region UploadDogMethod
+    private void publishDog() {
+        mProgress.setMessage("Uploading...");
+        mProgress.show();
+
+
+        final String name = etDogName.getText().toString();
+        final String desription = etDogDesription.getText().toString();
+        final String contact = etDogContact.getText().toString();
+
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
+
+            StorageReference filePath = mStorage.child("Dogs").child(mImageUri.getLastPathSegment());
+
+            filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                    DatabaseReference newCat = mDatabaseReference.push();
+
+                    newCat.child("name").setValue(name);
+                    newCat.child("desription").setValue(desription);
+                    newCat.child("contact").setValue(contact);
+                    newCat.child("image").setValue(downloadUrl.toString());
+
+                    mProgress.dismiss();
+
+                    startActivity(new Intent(AddDog.this,MainActivity.class));
+                }
+            });
+
+
+        }
+    }
+    //endregion
 
     //region GoogleMap
     private void googleMap() {
@@ -134,57 +193,20 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     }
     //endregion
 
-    //region ImageToImageView
+    //region PutImageToImageView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri image = data.getData();
-        ivDogImage.setImageURI(image);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+
+            mImageUri = data.getData();
+
+            ivDogImage.setImageURI(mImageUri);
+
+        }
     }
     //endregion
-
-    @OnClick(R.id.bFinish)
-    public void saveAnimal(){
-
-        String id = this.mDatabaseReference.push().getKey();
-        String name = this.etDogName.getText().toString();
-        String contact = this.etDogContact.getText().toString();
-        String desription = this.etDogDesription.getText().toString();
-        String image = this.ivDogImage.toString();
-
-        Dog dog = new Dog(id,image,name,desription,contact);
-
-        this.mDatabaseReference.child(id).setValue(dog);
-        this.etDogName.setText("");
-        this.etDogContact.setText("");
-        this.etDogDesription.setText("");
-
-
-    }
-
-    private void uploadImage(Bitmap bitmap){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReferenceFromUrl(getString(R.string.firebaseURL));
-        StorageReference mountainImagesRef = storageReference.child("images/cats");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
-        byte[] data = baos.toByteArray();
-        UploadTask uploadTask = mountainImagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-            }
-        });
-
-    }
 
 
     @Override
@@ -197,4 +219,8 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

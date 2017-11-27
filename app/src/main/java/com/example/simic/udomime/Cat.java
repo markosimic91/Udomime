@@ -21,6 +21,9 @@ public class Cat {
         this.mCatContact = mCatContact;
     }
 
+    public Cat() {
+    }
+
     public String getmId() {
         return mId;
     }
