@@ -1,90 +1,77 @@
 package com.example.simic.udomime;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Simic on 26.10.2017..
+ * Created by Simic on 29.11.2017..
  */
 
-public class DogAdapter extends BaseAdapter {
-    private ArrayList<Dog> mDogList;
+public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder>{
 
-    public DogAdapter(ArrayList<Dog> mDogList) {
-        this.mDogList = mDogList;
-        this.mDogList.addAll(mDogList);
+    ArrayList<Dog> mDogs;
+
+    public DogAdapter(ArrayList<Dog> mDogs) {
+        this.mDogs = mDogs;
     }
 
 
     @Override
-    public int getCount() {
-        return this.mDogList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dogView = inflater.inflate(R.layout.dog_item_list,parent,false);
+        ViewHolder dogViewHolder = new ViewHolder(dogView);
+        return dogViewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return this.mDogList.get(position);
-    }
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Dog dog = this.mDogs.get(position);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        holder.tvDogName.setText(dog.getmDogName());
+        holder.tvDogContact.setText(dog.getmDogContact());
+        holder.tvDogDesription.setText(dog.getmDogDescription());
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        AnimalViewHolder holder;
-
-        if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dog_list_item,parent,false);
-            holder = new AnimalViewHolder(convertView);
-            convertView.setTag(holder);
-        }else{
-            holder = (AnimalViewHolder) convertView.getTag();
-        }
-
-        Dog dog = this.mDogList.get(position);
-
-        Picasso.with(parent.getContext())
+        Picasso.with(holder.tvDogName.getContext())
                 .load(dog.getmDogPicure())
                 .fit()
                 .centerCrop()
                 .into(holder.ivDogPic);
 
-        holder.tvDogContact.setText(String.valueOf(dog.getmDogContact()));
-        holder.tvDogName.setText(dog.getmDogName());
-        holder.tvDogDescription.setText(dog.getmDogDescription());
-
-        return convertView;
     }
 
-    static class AnimalViewHolder {
-        @BindView(R.id.ivDogPic)
-        ImageView ivDogPic;
-        @BindView(R.id.tvDogName)
-        TextView tvDogName;
-        @BindView(R.id.tvDogDescription)
-        TextView tvDogDescription;
-        @BindView(R.id.tvDogContact)
-        TextView tvDogContact;
+    @Override
+    public int getItemCount() {
+        return this.mDogs.size();
+    }
 
-        public AnimalViewHolder(View view) {
-            ButterKnife.bind(this, view);
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+
+        @BindView(R.id.tvDogName) TextView tvDogName;
+        @BindView(R.id.tvDogDescription) TextView tvDogDesription;
+        @BindView(R.id.tvDogContact) TextView tvDogContact;
+        @BindView(R.id.ivDogPic) ImageView ivDogPic;
+        @BindView(R.id.bAdopted) Button bAdopted;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
+

@@ -7,7 +7,18 @@
         android:title="@string/menu_add"
         app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_add"
-        android:onClick="addAnimal"
+        />
+
+    <item
+        android:id="@+id/menu_register"
+        android:title="@string/register"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_login"
+        android:title="@string/login"
+        app:showAsAction="always"
         />
 
 </menu>

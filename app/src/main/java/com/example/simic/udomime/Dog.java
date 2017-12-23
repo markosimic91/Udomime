@@ -8,11 +8,14 @@ import android.net.Uri;
 
 public class Dog {
     private String mId;
-    private String  mDogPicure;
+    private String mDogPicure;
     private String mDogName;
     private String mDogDescription;
     private String mDogContact;
 
+    public Dog() {
+
+    }
 
     public Dog(String mId, String mDogPicure, String mDogName, String mDogDescription, String mDogContact) {
         this.mId = mId;

@@ -1,95 +1,76 @@
 package com.example.simic.udomime;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Simic on 26.10.2017..
+ * Created by Simic on 29.11.2017..
  */
 
-public class CatAdapter extends BaseAdapter {
+public class CatAdapter extends RecyclerView.Adapter<CatAdapter.ViewHolder>{
 
-    private ArrayList<Cat> mCatList;
+    ArrayList<Cat> mCats;
 
-    public CatAdapter(ArrayList<Cat> mCatList) {
-        this.mCatList = mCatList;
-        this.mCatList.addAll(mCatList);
+    public CatAdapter(ArrayList<Cat> mCats) {
+
+        this.mCats = mCats;
+
     }
 
 
+
     @Override
-    public int getCount() {
-        return this.mCatList.size();
+    public CatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View catView = inflater.inflate(R.layout.cat_item_list,parent,false);
+        ViewHolder catViewHolder = new ViewHolder(catView);
+        return catViewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return this.mCatList.get(position);
-    }
+    public void onBindViewHolder(CatAdapter.ViewHolder holder, int position) {
+        Cat cat = this.mCats.get(position);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        holder.tvCatContact.setText(cat.getmCatContact());
+        holder.tvCatDescription.setText(cat.getmCatContact());
+        holder.tvCatName.setText(cat.getmCatName());
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CatAdapter.CatViewAdapter holder;
-
-        if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.cat_item_list,parent,false);
-            holder = new CatAdapter.CatViewAdapter(convertView);
-            convertView.setTag(holder);
-        }else{
-            holder = (CatAdapter.CatViewAdapter) convertView.getTag();
-        }
-
-        Cat cat = this.mCatList.get(position);
-
-        Picasso.with(parent.getContext())
+        Picasso.with(holder.tvCatName.getContext())
                 .load(cat.getmCatPicure())
                 .fit()
                 .centerCrop()
                 .into(holder.ivCatPic);
-
-        holder.tvCatContact.setText(String.valueOf(cat.getmCatContact()));
-        holder.tvCatName.setText(cat.getmCatName());
-        holder.tvCatDescription.setText(cat.getmCatDescription());
-
-        return convertView;
     }
 
-    static class CatViewAdapter {
-        @BindView(R.id.ivCatPic)
-        ImageView ivCatPic;
-        @BindView(R.id.tvCatName)
-        TextView tvCatName;
-        @BindView(R.id.tvCatDescription)
-        TextView tvCatDescription;
-        @BindView(R.id.tvCatContact)
-        TextView tvCatContact;
+    @Override
+    public int getItemCount() {
+        return this.mCats.size();
+    }
 
-        public CatViewAdapter(View view) {
-            ButterKnife.bind(this, view);
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.tvCatName) TextView tvCatName;
+        @BindView(R.id.tvCatContact) TextView tvCatContact;
+        @BindView(R.id.tvCatDescription) TextView tvCatDescription;
+        @BindView(R.id.ivCatPic) ImageView ivCatPic;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }
-
-
-

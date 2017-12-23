@@ -1,27 +1,21 @@
 package com.example.simic.udomime;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Simic on 20.10.2017..
@@ -30,23 +24,57 @@ import butterknife.ButterKnife;
 public class DogFragment extends Fragment {
 
     public static final String TITLE = "Pas";
+    private static final String DOG = "Dog";
+    private DatabaseReference mDogReference;
+    private RecyclerView mDogList;
+    private View view;
+
 
 
     public DogFragment() {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dog_fragment, container, false);
+        view = inflater.inflate(R.layout.activity_dog_fragment, container, false);
 
-
+        mDogList = (RecyclerView) view.findViewById(R.id.rlvDogs);
+        mDogReference = FirebaseDatabase.getInstance().getReference().child(DOG);
+        mDogList.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
+
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+        final FirebaseRecyclerAdapter<Dog,DogAdapter.ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Dog, DogAdapter.ViewHolder>(
+                Dog.class,
+                R.layout.dog_item_list,
+                DogAdapter.ViewHolder.class,
+                mDogReference
+
+        ) {
+            @Override
+            protected void populateViewHolder(DogAdapter.ViewHolder viewHolder, Dog model, final int position) {
+
+                viewHolder.tvDogName.setText(model.getmDogName());
+                viewHolder.tvDogDesription.setText(model.getmDogDescription());
+                viewHolder.tvDogContact.setText(model.getmDogContact());
+                Picasso.with(getContext()).load(model.getmDogPicure()).into(viewHolder.ivDogPic);
+
+
+
+            }
+        };
+
+        mDogList.setAdapter(firebaseRecyclerAdapter);
+    }
+
 }
+
+

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,11 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,13 +50,16 @@ import butterknife.OnClick;
 import butterknife.internal.Utils;
 
 public class AddCat extends AppCompatActivity implements OnMapReadyCallback,ValueEventListener,View.OnClickListener {
-    
+
     private static final int PICK_IMAGE = 100;
     private static String CAT = "Cat";
     private Uri mImageUri = null;
     private DatabaseReference mDatabaseReference;
     private StorageReference mStorage;
     private ProgressDialog mProgress;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
+    private DatabaseReference mDatabaseUsers;
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
@@ -74,6 +82,12 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(CAT);
         this.mDatabaseReference.addValueEventListener(this);
         mStorage = FirebaseStorage.getInstance().getReference();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
+
+        mCurrentUser = mAuth.getCurrentUser();
 
         bFinish.setOnClickListener(this);
         this.handleEnterEditText();
@@ -121,18 +135,40 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    @SuppressWarnings("VisibleForTests") final Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                    DatabaseReference newCat = mDatabaseReference.push();
+                    final DatabaseReference newCat = mDatabaseReference.push();
 
-                    newCat.child("name").setValue(name);
-                    newCat.child("desription").setValue(desription);
-                    newCat.child("contact").setValue(contact);
-                    newCat.child("image").setValue(downloadUrl.toString());
+
+
+                    mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            newCat.child("mCatName").setValue(name);
+                            newCat.child("mCatDescription").setValue(desription);
+                            newCat.child("mCatContact").setValue(contact);
+                            newCat.child("mCatPicure").setValue(downloadUrl.toString());
+                            newCat.child("mUid").setValue(mCurrentUser.getUid());
+                            newCat.child("mUserName").setValue(dataSnapshot.child("mName").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    startActivity(new Intent(AddCat.this,MainActivity.class));
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+
+                        }
+                    });
 
                     mProgress.dismiss();
 
-                    startActivity(new Intent(AddCat.this,MainActivity.class));
                 }
             });
 

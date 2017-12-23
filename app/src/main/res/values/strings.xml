@@ -2,6 +2,8 @@
     <string name="app_name">UdomiMe</string>
     <string name="menu_add">Add</string>
     <string name="firebaseURL">https://console.firebase.google.com/u/1/project/udomime-f87ee/storage/udomime-f87ee.appspot.com/files</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 
 
 </resources>

@@ -125,10 +125,10 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
                     DatabaseReference newCat = mDatabaseReference.push();
 
-                    newCat.child("name").setValue(name);
-                    newCat.child("desription").setValue(desription);
-                    newCat.child("contact").setValue(contact);
-                    newCat.child("image").setValue(downloadUrl.toString());
+                    newCat.child("mDogName").setValue(name);
+                    newCat.child("mDogDescription").setValue(desription);
+                    newCat.child("mDogContact").setValue(contact);
+                    newCat.child("mDogPicure").setValue(downloadUrl.toString());
 
                     mProgress.dismiss();
 
