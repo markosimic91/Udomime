@@ -4,6 +4,8 @@
     <string name="firebaseURL">https://console.firebase.google.com/u/1/project/udomime-f87ee/storage/udomime-f87ee.appspot.com/files</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="add_cat">Add Cat</string>
+    <string name="add_dog">Add Dog</string>
 
 
 </resources>

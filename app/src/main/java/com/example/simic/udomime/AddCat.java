@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,9 +59,9 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
     private DatabaseReference mDatabaseReference;
     private StorageReference mStorage;
     private ProgressDialog mProgress;
+    private DatabaseReference mDatabaseUsers;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    private DatabaseReference mDatabaseUsers;
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
@@ -82,12 +84,9 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(CAT);
         this.mDatabaseReference.addValueEventListener(this);
         mStorage = FirebaseStorage.getInstance().getReference();
-
         mAuth = FirebaseAuth.getInstance();
-
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
-
         mCurrentUser = mAuth.getCurrentUser();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
 
         bFinish.setOnClickListener(this);
         this.handleEnterEditText();
@@ -101,6 +100,7 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
                 Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent,PICK_IMAGE);
+
             }
         });
 
@@ -109,6 +109,7 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
             public void onClick(View v) {
 
                 publishCat();
+
             }
         });
 
@@ -116,11 +117,12 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
 
     }
 
+
     //region UploadMethod
     private void publishCat() {
 
         mProgress.setMessage("Uploading...");
-        mProgress.show();
+
 
 
         final String name = etCatName.getText().toString();
@@ -128,6 +130,8 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
         final String contact = etCatContact.getText().toString();
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
+
+            mProgress.show();
 
             StorageReference filePath = mStorage.child("Cats").child(mImageUri.getLastPathSegment());
 
@@ -139,42 +143,52 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
 
                     final DatabaseReference newCat = mDatabaseReference.push();
 
-
-
-                    mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            newCat.child("mCatName").setValue(name);
-                            newCat.child("mCatDescription").setValue(desription);
-                            newCat.child("mCatContact").setValue(contact);
-                            newCat.child("mCatPicure").setValue(downloadUrl.toString());
-                            newCat.child("mUid").setValue(mCurrentUser.getUid());
-                            newCat.child("mUserName").setValue(dataSnapshot.child("mName").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    startActivity(new Intent(AddCat.this,MainActivity.class));
+                                    newCat.child("mCatName").setValue(name);
+                                    newCat.child("mCatDescription").setValue(desription);
+                                    newCat.child("mCatContact").setValue(contact);
+                                    newCat.child("mCatPicture").setValue(downloadUrl.toString());
+                                    newCat.child("mUid").setValue(mCurrentUser.getUid());
+                                    newCat.child("mUserName").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            
+                                            if (task.isSuccessful()){
+                                                startActivity(new Intent(AddCat.this,MainActivity.class));
+                                                Toast.makeText(AddCat.this, "Your cat is ready for adoption!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+
+
                                 }
                             });
 
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
+                        mProgress.dismiss();
 
                         }
+
                     });
 
-                    mProgress.dismiss();
 
-                }
-            });
 
         }
     }
+
+
+
     //endregion
+
 
     //region PutImageToImageView
     @Override

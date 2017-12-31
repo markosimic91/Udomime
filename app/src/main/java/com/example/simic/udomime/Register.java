@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 
 public class Register extends AppCompatActivity {
 
+    private static final String USERS = "Users";
     @BindView(R.id.etUserName) EditText etUserName;
     @BindView(R.id.etUserEmail) EditText etUserEmail;
     @BindView(R.id.etUserPassword) EditText etUserPassword;
@@ -40,7 +41,7 @@ public class Register extends AppCompatActivity {
         mProgress = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(USERS);
 
 
         bRegister.setOnClickListener(new View.OnClickListener() {

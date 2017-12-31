@@ -1,14 +1,12 @@
 package com.example.simic.udomime;
 
-import android.net.Uri;
-
 /**
  * Created by Simic on 26.10.2017..
  */
 
 public class Dog {
     private String mId;
-    private String mDogPicure;
+    private String mDogPicture;
     private String mDogName;
     private String mDogDescription;
     private String mDogContact;
@@ -17,9 +15,9 @@ public class Dog {
 
     }
 
-    public Dog(String mId, String mDogPicure, String mDogName, String mDogDescription, String mDogContact) {
+    public Dog(String mId, String mDogPicture, String mDogName, String mDogDescription, String mDogContact) {
         this.mId = mId;
-        this.mDogPicure = mDogPicure;
+        this.mDogPicture = mDogPicture;
         this.mDogName = mDogName;
         this.mDogDescription = mDogDescription;
         this.mDogContact = mDogContact;
@@ -33,12 +31,12 @@ public class Dog {
         this.mId = mId;
     }
 
-    public String getmDogPicure() {
-        return mDogPicure;
+    public String getmDogPicture() {
+        return mDogPicture;
     }
 
-    public void setmDogPicure(String mDogPicure) {
-        this.mDogPicure = mDogPicure;
+    public void setmDogPicture(String mDogPicture) {
+        this.mDogPicture = mDogPicture;
     }
 
     public String getmDogName() {

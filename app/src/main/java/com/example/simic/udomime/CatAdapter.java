@@ -30,8 +30,6 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.ViewHolder>{
 
     }
 
-
-
     @Override
     public CatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -50,7 +48,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.ViewHolder>{
         holder.tvCatName.setText(cat.getmCatName());
 
         Picasso.with(holder.tvCatName.getContext())
-                .load(cat.getmCatPicure())
+                .load(cat.getmCatPicture())
                 .fit()
                 .centerCrop()
                 .into(holder.ivCatPic);

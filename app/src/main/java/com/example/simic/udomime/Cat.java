@@ -8,14 +8,14 @@ import android.net.Uri;
 
 public class Cat {
     private String mId;
-    private String mCatPicure;
+    private String mCatPicture;
     private String mCatName;
     private String mCatDescription;
     private String mCatContact;
 
     public Cat(String mId, String mCatPicure, String mCatName, String mCatDescription, String mCatContact) {
         this.mId = mId;
-        this.mCatPicure = mCatPicure;
+        this.mCatPicture = mCatPicure;
         this.mCatName = mCatName;
         this.mCatDescription = mCatDescription;
         this.mCatContact = mCatContact;
@@ -32,12 +32,12 @@ public class Cat {
         this.mId = mId;
     }
 
-    public String getmCatPicure() {
-        return mCatPicure;
+    public String getmCatPicture() {
+        return mCatPicture;
     }
 
-    public void setmCatPicure(String mCatPicure) {
-        this.mCatPicure = mCatPicure;
+    public void setmCatPicture(String mCatPicture) {
+        this.mCatPicture = mCatPicture;
     }
 
     public String getmCatName() {

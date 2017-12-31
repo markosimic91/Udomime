@@ -32,7 +32,10 @@
         <activity android:name=".AddDog" />
         <activity android:name=".AddCat" />
         <activity android:name=".Login" />
-        <activity android:name=".Register"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".SingleCat" />
+        <activity android:name=".SingleDog" />
+        <activity android:name=".Comments"></activity>
     </application>
 
 </manifest>

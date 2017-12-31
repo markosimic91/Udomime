@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +46,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder>{
         holder.tvDogDesription.setText(dog.getmDogDescription());
 
         Picasso.with(holder.tvDogName.getContext())
-                .load(dog.getmDogPicure())
+                .load(dog.getmDogPicture())
                 .fit()
                 .centerCrop()
                 .into(holder.ivDogPic);
@@ -66,7 +65,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder>{
         @BindView(R.id.tvDogDescription) TextView tvDogDesription;
         @BindView(R.id.tvDogContact) TextView tvDogContact;
         @BindView(R.id.ivDogPic) ImageView ivDogPic;
-        @BindView(R.id.bAdopted) Button bAdopted;
 
         public ViewHolder(View itemView) {
             super(itemView);

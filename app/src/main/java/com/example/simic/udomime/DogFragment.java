@@ -1,11 +1,9 @@
 package com.example.simic.udomime;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,13 +60,28 @@ public class DogFragment extends Fragment {
             @Override
             protected void populateViewHolder(DogAdapter.ViewHolder viewHolder, Dog model, final int position) {
 
+                final String dog_key = getRef(position).getKey();
+
+
                 viewHolder.tvDogName.setText(model.getmDogName());
                 viewHolder.tvDogDesription.setText(model.getmDogDescription());
                 viewHolder.tvDogContact.setText(model.getmDogContact());
-                Picasso.with(getContext()).load(model.getmDogPicure()).into(viewHolder.ivDogPic);
+                Picasso.with(getContext()).load(model.getmDogPicture()).into(viewHolder.ivDogPic);
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
 
+                        Intent singleDog = new Intent(getActivity(),SingleDog.class);
+                        singleDog.putExtra("dog_id",dog_key);
+                        startActivity(singleDog);
 
+
+                    }
+                });
+
+                
             }
         };
 

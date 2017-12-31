@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/ivCatImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:id="@+id/tvCatName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:layout_below="@id/ivCatImage"/>
+
+    <TextView
+        android:id="@+id/tvCatContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact:"
+        android:layout_below="@id/tvCatName"/>
+
+    <TextView
+        android:id="@+id/tvCatDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        android:layout_below="@id/tvCatContact"/>
+    <Button
+        android:id="@+id/bLeaveComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCatDescription"
+        android:text="Leave Comment"
+        android:background="@color/cardview_light_background"
+        android:layout_margin="10dp"/>
+
+
+
+    <Button
+        android:id="@+id/bCatAdopt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Cat has been successfully adopted!"
+        android:visibility="invisible" />
+    
+
+
+</RelativeLayout>

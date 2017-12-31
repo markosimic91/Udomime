@@ -3,22 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_add"
-        android:title="@string/menu_add"
+        android:id="@+id/menu_addDog"
+        android:title="@string/add_dog"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_add"
         />
+
+    <item
+        android:id="@+id/menu_addCat"
+        android:title="@string/add_cat"
+        app:showAsAction="always"
+        />
+
 
     <item
         android:id="@+id/menu_register"
         android:title="@string/register"
-        app:showAsAction="always"
+        app:showAsAction="collapseActionView"
         />
 
     <item
         android:id="@+id/menu_login"
         android:title="@string/login"
-        app:showAsAction="always"
+        app:showAsAction="collapseActionView"
+        />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Logout"
+        app:showAsAction="collapseActionView"
         />
 
 </menu>

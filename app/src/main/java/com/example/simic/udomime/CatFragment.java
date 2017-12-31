@@ -1,9 +1,7 @@
 package com.example.simic.udomime;
 
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,27 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Simic on 20.10.2017..
@@ -77,10 +59,27 @@ public class CatFragment extends Fragment {
         ) {
             @Override
             protected void populateViewHolder(CatAdapter.ViewHolder viewHolder, Cat model, int position) {
+
+                final String cat_key = getRef(position).getKey();
+                
+
                 viewHolder.tvCatName.setText(model.getmCatName());
                 viewHolder.tvCatDescription.setText(model.getmCatDescription());
                 viewHolder.tvCatContact.setText(model.getmCatContact());
-                Picasso.with(getContext()).load(model.getmCatPicure()).into(viewHolder.ivCatPic);
+                Picasso.with(getContext()).load(model.getmCatPicture()).into(viewHolder.ivCatPic);
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent singleCat = new Intent(getActivity(),SingleCat.class);
+                        singleCat.putExtra("cat_id",cat_key);
+                        startActivity(singleCat);
+
+
+                    }
+                });
             }
 
         };

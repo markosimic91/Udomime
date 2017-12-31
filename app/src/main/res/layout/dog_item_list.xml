@@ -40,18 +40,8 @@
             <TextView
                 android:id="@+id/tvDogDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/tvDogName" />
-
-            <Button
-                android:id="@+id/bAdopted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvDogDescription"
-                android:background="@color/adoptedColor"
-                android:text="Adopted" />
 
         </RelativeLayout>
 

@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,11 +24,13 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
 
+    private static final String USERS = "Users";
     @BindView(R.id.vpPager) ViewPager vpPager;
     @BindView(R.id.tlTabs) TabLayout tlTabs;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabaseUsers;
 
 
     @Override
@@ -32,30 +39,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         this.loadFragments();
-
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                if(firebaseAuth.getCurrentUser() == null){
-                    Intent loginIntent = new Intent(MainActivity.this,Register.class);
+                if (firebaseAuth.getCurrentUser() == null){
+                    Intent loginIntent = new Intent(MainActivity.this,Login.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
                 }
-
             }
-
         };
 
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child(USERS);
+        mDatabaseUsers.keepSynced(true);
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }
 
     private void loadFragments() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -73,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
+
+    }
+
+    //region ActionBarIntents
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_register:
@@ -83,6 +92,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent login = new Intent(MainActivity.this,Login.class);
                 startActivity(login);
                 return true;
+            case R.id.menu_addCat:
+                Intent addCat = new Intent(MainActivity.this,AddCat.class);
+                startActivity(addCat);
+                return true;
+            case R.id.menu_addDog:
+                Intent addDog = new Intent(MainActivity.this,AddDog.class);
+                startActivity(addDog);
+                return true;
+            case R.id.menu_logout:
+                logout();
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -90,5 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void logout() {
+        mAuth.signOut();
+    }
+    //endregion
 
 }

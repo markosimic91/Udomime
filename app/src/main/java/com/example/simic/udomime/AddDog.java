@@ -26,8 +26,12 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,6 +58,10 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     private StorageReference mStorage;
     private ProgressDialog mProgress;
     private Uri mImageUri = null;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseUsers;
+    private FirebaseUser mCurrentUsers;
+
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
@@ -79,6 +87,9 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference(DOG);
         this.mDatabaseReference.addValueEventListener(this);
         mStorage = FirebaseStorage.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUsers = mAuth.getCurrentUser();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUsers.getUid());
 
         bFinish.setOnClickListener(this);
         this.handleEnterEditText();
@@ -115,24 +126,48 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
 
+            mProgress.show();
+
             StorageReference filePath = mStorage.child("Dogs").child(mImageUri.getLastPathSegment());
 
             filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    @SuppressWarnings("VisibleForTests") final Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                    DatabaseReference newCat = mDatabaseReference.push();
+                    final DatabaseReference newDog = mDatabaseReference.push();
+                    mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    newCat.child("mDogName").setValue(name);
-                    newCat.child("mDogDescription").setValue(desription);
-                    newCat.child("mDogContact").setValue(contact);
-                    newCat.child("mDogPicure").setValue(downloadUrl.toString());
+                            newDog.child("mDogName").setValue(name);
+                            newDog.child("mDogDescription").setValue(desription);
+                            newDog.child("mDogContact").setValue(contact);
+                            newDog.child("mDogPicture").setValue(downloadUrl.toString());
+                            newDog.child("mUid").setValue(mCurrentUsers.getUid());
+                            newDog.child("mUserName").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()){
+                                        startActivity(new Intent(AddDog.this,MainActivity.class));
+                                        Toast.makeText(AddDog.this, "Your dog is ready for adoption!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
 
                     mProgress.dismiss();
 
-                    startActivity(new Intent(AddDog.this,MainActivity.class));
                 }
             });
 
