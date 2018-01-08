@@ -6,6 +6,21 @@
     <string name="register">Register</string>
     <string name="add_cat">Add Cat</string>
     <string name="add_dog">Add Dog</string>
+    <string name="dog_name">Dog Name</string>
+    <string name="contact">Contact</string>
+    <string name="dog_description">Dog Description</string>
+    <string name="finish">Finish</string>
+    <string name="cat_name">Cat Name</string>
+    <string name="cat_description">Cat Description</string>
+    <string name="name">Enter Name</string>
+    <string name="email">Enter Email</string>
+    <string name="password">Enter Password</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="new_account">New Account</string>
+    <string name="leave_comment">Leave Comment</string>
+    <string name="cat_has_been_successfully_adopted">Cat has been successfully adopted!</string>
+    <string name="dog_has_been_successfully_adopted">Dog has been successfully adopted!</string>
 
 
 </resources>

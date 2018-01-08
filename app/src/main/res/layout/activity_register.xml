@@ -6,40 +6,50 @@
     <ImageView
         android:layout_margin="@dimen/logoMargin"
         android:id="@+id/ivLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/udomiMeImg"
+        android:layout_height="@dimen/udomiMeImg"
         android:src="@drawable/udomime"
         android:layout_centerHorizontal="true"
         />
 
     <EditText
         android:id="@+id/etUserName"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:inputType="textPersonName"
+        android:hint="@string/name"
         android:layout_below="@id/ivLogo"/>
 
     <EditText
         android:id="@+id/etUserEmail"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_below="@id/etUserName"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:inputType="textEmailAddress"
-        android:hint="Email"/>
+        android:hint="@string/email"/>
 
     <EditText
         android:id="@+id/etUserPassword"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_below="@id/etUserEmail"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:inputType="textPassword"
-        android:hint="Password"/>
+        android:hint="@string/password"/>
 
     <Button
         android:id="@+id/bRegister"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/bRegisterLogin"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:background="@color/cardview_light_background"
+        android:layout_marginTop="@dimen/bMarginTopRegisterLogin"
+        android:layout_centerHorizontal="true"
+        android:text="@string/register"
         android:layout_below="@id/etUserPassword"/>
 
 </RelativeLayout>

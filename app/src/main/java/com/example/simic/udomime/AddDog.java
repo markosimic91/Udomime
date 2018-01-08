@@ -71,9 +71,8 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     //region BindView
     @BindView(R.id.ibAddDog) ImageButton ibAddDog;
     @BindView(R.id.etDogName) EditText etDogName;
-    @BindView(R.id.etDogDesription) EditText etDogDesription;
+    @BindView(R.id.etDogDescription) EditText etDogDescription;
     @BindView(R.id.etDogContact) EditText etDogContact;
-    @BindView(R.id.ivDogImage) ImageView ivDogImage;
     @BindView(R.id.bFinish) Button bFinish;
     //endregion
 
@@ -92,7 +91,6 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUsers.getUid());
 
         bFinish.setOnClickListener(this);
-        this.handleEnterEditText();
         this.googleMap();
 
         //region OnClickLiseners
@@ -121,7 +119,7 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
 
         final String name = etDogName.getText().toString();
-        final String desription = etDogDesription.getText().toString();
+        final String desription = etDogDescription.getText().toString();
         final String contact = etDogContact.getText().toString();
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
@@ -172,9 +170,13 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
             });
 
 
+        }else{
+            mProgress.dismiss();
+            Toast.makeText(this, "Please check your input!", Toast.LENGTH_SHORT).show();
         }
     }
     //endregion
+    
 
     //region GoogleMap
     private void googleMap() {
@@ -211,13 +213,6 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     }
     //endregion
 
-    //region EditTextEnter
-    private void handleEnterEditText() {
-        etDogDesription.setInputType(InputType.TYPE_CLASS_TEXT);
-        etDogName.setInputType(InputType.TYPE_CLASS_TEXT);
-        etDogContact.setInputType(InputType.TYPE_CLASS_TEXT);
-    }
-    //endregion
 
     //region GetImage
     @OnClick(R.id.ibAddDog)
@@ -237,7 +232,7 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
             mImageUri = data.getData();
 
-            ivDogImage.setImageURI(mImageUri);
+            ibAddDog.setImageURI(mImageUri);
 
         }
     }

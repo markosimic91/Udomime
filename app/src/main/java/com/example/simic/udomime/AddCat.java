@@ -69,10 +69,8 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
 
     @BindView(R.id.ibAddCat) ImageButton ibAddCat;
     @BindView(R.id.etCatName) EditText etCatName;
-    @BindView(R.id.etCatDesription) EditText etCatDesription;
+    @BindView(R.id.etCatDescription) EditText etCatDescription;
     @BindView(R.id.etCatContact) EditText etCatContact;
-    @BindView(R.id.ivCatImage) ImageView ivCatImage;
-
     @BindView(R.id.bFinish) Button bFinish;
 
     @Override
@@ -89,7 +87,6 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid());
 
         bFinish.setOnClickListener(this);
-        this.handleEnterEditText();
 
         this.googleMap();
 
@@ -126,7 +123,7 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
 
 
         final String name = etCatName.getText().toString();
-        final String desription = etCatDesription.getText().toString();
+        final String desription = etCatDescription.getText().toString();
         final String contact = etCatContact.getText().toString();
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
@@ -181,7 +178,9 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
                     });
 
 
-
+        }else {
+            mProgress.dismiss();
+            Toast.makeText(this, "Please check your input!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -199,7 +198,7 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
 
             mImageUri = data.getData();
 
-            ivCatImage.setImageURI(mImageUri);
+            ibAddCat.setImageURI(mImageUri);
 
         }
     }
@@ -256,11 +255,4 @@ public class AddCat extends AppCompatActivity implements OnMapReadyCallback,Valu
     }
     //endregion
 
-    //region EditTextEnter
-    private void handleEnterEditText() {
-        etCatContact.setInputType(InputType.TYPE_CLASS_TEXT);
-        etCatName.setInputType(InputType.TYPE_CLASS_TEXT);
-        etCatDesription.setInputType(InputType.TYPE_CLASS_TEXT);
-    }
-    //endregion
 }

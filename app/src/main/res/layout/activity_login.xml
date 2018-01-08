@@ -1,65 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
 <RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/ivUdomiMe"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/udomiMeImg"
+        android:layout_height="@dimen/udomiMeImg"
         android:src="@drawable/udomime"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/logoMargin"/>
 
     <EditText
         android:id="@+id/etInputEmail"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/ivUdomiMe"
-        android:hint="Enter Email"
+        android:hint="@string/enter_email"
         android:inputType="textEmailAddress"
         android:textAlignment="center"/>
+
     <EditText
         android:id="@+id/etInputPassword"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/etInputEmail"
-        android:hint="Enter Password"
+        android:hint="@string/enter_password"
         android:inputType="textPassword"
         android:textAlignment="center"/>
+
     <Button
         android:id="@+id/bInputFinish"
         android:background="@color/cardview_light_background"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_below="@id/etInputPassword"
         android:layout_centerHorizontal="true"
-        android:text="Login"/>
-
+        android:text="@string/login"/>
 
     <Button
         android:id="@+id/bNeedNewAcc"
         android:background="@color/cardview_light_background"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
         android:layout_below="@id/bInputFinish"
-        android:text="New Account"
+        android:text="@string/new_account"
         android:layout_centerHorizontal="true"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleSignIn"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/etLoginRegisterWidth"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/googleMargin"
         android:layout_below="@id/bNeedNewAcc"
         android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>
-</ScrollView>

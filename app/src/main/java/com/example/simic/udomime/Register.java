@@ -78,7 +78,7 @@ public class Register extends AppCompatActivity {
 
                         mProgress.dismiss();
                         
-                        Intent intent = new Intent(Register.this,MainActivity.class);
+                        Intent intent = new Intent(Register.this,Login.class);
                         startActivity(intent);
 
                     }else{

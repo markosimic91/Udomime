@@ -35,7 +35,7 @@
         <activity android:name=".Register" />
         <activity android:name=".SingleCat" />
         <activity android:name=".SingleDog" />
-        <activity android:name=".Comments"></activity>
+        <activity android:name=".Chat"></activity>
     </application>
 
 </manifest>

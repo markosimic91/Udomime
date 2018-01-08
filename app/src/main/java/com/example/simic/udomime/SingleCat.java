@@ -3,14 +3,9 @@ package com.example.simic.udomime;
 import android.content.Intent;
 import android.os.*;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,12 +24,11 @@ import butterknife.OnClick;
 public class SingleCat extends AppCompatActivity {
 
     private static final String CAT = "Cat";
-    private static final String MESSAGES = "messages";
     private String mCat_key = null;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    @BindView(R.id.ivCatImage) ImageView ivCatImage;
+    @BindView(R.id.ivCatPic) ImageView ivCatPic;
     @BindView(R.id.tvCatName) TextView tvCatName;
     @BindView(R.id.tvCatContact)TextView tvCatContact;
     @BindView(R.id.tvCatDescription)TextView tvCatDescription;
@@ -57,6 +48,7 @@ public class SingleCat extends AppCompatActivity {
         mCat_key = getIntent().getExtras().getString("cat_id");
 
         mDatabase.child(mCat_key).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -69,7 +61,7 @@ public class SingleCat extends AppCompatActivity {
                 tvCatName.setText(catName);
                 tvCatContact.setText(catContact);
                 tvCatDescription.setText(catDescription);
-                Picasso.with(SingleCat.this).load(catPicture).into(ivCatImage);
+                Picasso.with(SingleCat.this).load(catPicture).into(ivCatPic);
 
                 if(mAuth.getCurrentUser().getUid().equals(mUid)){
 
@@ -102,7 +94,7 @@ public class SingleCat extends AppCompatActivity {
 
     @OnClick(R.id.bLeaveComment)
     public void leaveComment(){
-        Intent comm = new Intent(SingleCat.this,Comments.class);
+        Intent comm = new Intent(SingleCat.this,Chat.class);
         startActivity(comm);
     }
 

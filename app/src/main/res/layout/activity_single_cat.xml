@@ -4,50 +4,75 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/ivCatImage"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
 
-    <TextView
-        android:id="@+id/tvCatName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:layout_below="@id/ivCatImage"/>
+            <ImageView
+                android:id="@+id/ivCatPic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/add_btn" />
 
-    <TextView
-        android:id="@+id/tvCatContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contact:"
-        android:layout_below="@id/tvCatName"/>
+            <TextView
+                android:id="@+id/tvCatName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/singlePadding"
+                android:paddingEnd="@dimen/singlePadding"
+                android:paddingLeft="@dimen/singlePadding"
+                android:paddingRight="@dimen/singlePadding"
+                android:paddingStart="@dimen/singlePadding"
+                android:textSize="@dimen/singleTxtSize"
+                android:textStyle="bold"
+                android:layout_below="@id/ivCatPic"
+                />
 
-    <TextView
-        android:id="@+id/tvCatDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description:"
-        android:layout_below="@id/tvCatContact"/>
-    <Button
-        android:id="@+id/bLeaveComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvCatDescription"
-        android:text="Leave Comment"
-        android:background="@color/cardview_light_background"
-        android:layout_margin="10dp"/>
+            <TextView
+                android:id="@+id/tvCatContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/singlePadding"
+                android:paddingEnd="@dimen/singlePadding"
+                android:paddingLeft="@dimen/singlePadding"
+                android:paddingRight="@dimen/singlePadding"
+                android:paddingStart="@dimen/singlePadding"
+                android:layout_below="@+id/tvCatName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/tvCatDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/singlePadding"
+                android:paddingEnd="@dimen/singlePadding"
+                android:paddingLeft="@dimen/singlePadding"
+                android:paddingRight="@dimen/singlePadding"
+                android:paddingStart="@dimen/singlePadding"
+                android:layout_below="@id/tvCatContact"
+                />
+
+            <Button
+                android:id="@+id/bLeaveComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvCatDescription"
+                android:text="@string/leave_comment"
+                android:background="@color/cardview_light_background"
+                android:layout_margin="@dimen/commentButtonMagin"
+                android:padding="@dimen/commentBusttonPadding"/>
 
 
 
-    <Button
-        android:id="@+id/bCatAdopt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Cat has been successfully adopted!"
-        android:visibility="invisible" />
-    
+            <Button
+                android:id="@+id/bCatAdopt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/cardview_light_background"
+                android:text="@string/cat_has_been_successfully_adopted"
+                android:visibility="invisible" />
+
 
 
 </RelativeLayout>

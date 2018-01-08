@@ -1,51 +1,48 @@
 package com.example.simic.udomime;
 
+import java.util.Date;
+
 /**
  * Created by Simic on 29.12.2017..
  */
 
 public class Message {
 
-    private String mId;
-    private String mBody;
-    private String mAuthor;
+    private String MsgText;
+    private String MsgUser;
+    private long MsgTime;
 
     public Message() {
     }
 
-    public Message(String id, String body, String author) {
-        mId = id;
-        mBody = body;
-        mAuthor = author;
+    public Message(String msgText, String msgUser) {
+        this.MsgText = msgText;
+        this.MsgUser = msgUser;
+
+        MsgTime = new Date().getTime();
     }
 
-    public String getId() {
-        return mId;
+    public String getMsgText() {
+        return MsgText;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setMsgText(String msgText) {
+        MsgText = msgText;
     }
 
-    public String getBody() {
-        return mBody;
+    public String getMsgUser() {
+        return MsgUser;
     }
 
-    public void setBody(String body) {
-        mBody = body;
+    public void setMsgUser(String msgUserM) {
+        MsgUser = msgUserM;
     }
 
-    public String getAuthor() {
-        return mAuthor;
+    public long getMsgTime() {
+        return MsgTime;
     }
 
-    public void setAuthor(String author) {
-        mAuthor = author;
+    public void setMsgTime(long msgTime) {
+        MsgTime = msgTime;
     }
-
-    @Override
-    public String toString() {
-        return this.mAuthor + ": " + this.mBody;
-    }
-
 }

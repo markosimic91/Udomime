@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="logoMargin">20dp</dimen>
+    <dimen name="etNameMargin">20dp</dimen>
+    <dimen name="etMarginLeft">20dp</dimen>
+    <dimen name="etMarginRight">20dp</dimen>
+    <dimen name="etMarginStart">20dp</dimen>
+    <dimen name="etMarginTop">20dp</dimen>
+    <dimen name="etMarginBottom">20dp</dimen>
+    <dimen name="googleMapHeight">200dp</dimen>
+    <dimen name="finishMarginTop">30dp</dimen>
+    <dimen name="etPadding">10dp</dimen>
+    <dimen name="buttonMarginTop">30dp</dimen>
+    <dimen name="udomiMeImg">200dp</dimen>
+    <dimen name="etLoginRegisterWidth">300dp</dimen>
+    <dimen name="bRegisterLogin">250dp</dimen>
+    <dimen name="bMarginTopRegisterLogin">10dp</dimen>
+    <dimen name="googleMargin">10dp</dimen>
+    <dimen name="singlePadding">15dp</dimen>
+    <dimen name="singleTxtSize">16sp</dimen>
+    <dimen name="commentButtonMagin">10dp</dimen>
+    <dimen name="commentBusttonPadding">4dp</dimen>
+    <dimen name="listItemPadding">15dp</dimen>
 </resources>

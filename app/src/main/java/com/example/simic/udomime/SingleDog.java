@@ -28,7 +28,7 @@ public class SingleDog extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    @BindView(R.id.ivDogImage) ImageView ivDogImage;
+    @BindView(R.id.ivDogPic) ImageView ivDogPic;
     @BindView(R.id.tvDogName) TextView tvDogName;
     @BindView(R.id.tvDogContact)TextView tvDogContact;
     @BindView(R.id.tvDogDescription)TextView tvDogDescription;
@@ -57,7 +57,7 @@ public class SingleDog extends AppCompatActivity {
                 tvDogName.setText(dogName);
                 tvDogContact.setText(dogContact);
                 tvDogDescription.setText(dogDescription);
-                Picasso.with(SingleDog.this).load(dogPicture).into(ivDogImage);
+                Picasso.with(SingleDog.this).load(dogPicture).into(ivDogPic);
 
                 if(mAuth.getCurrentUser().getUid().equals(mUid)){
 

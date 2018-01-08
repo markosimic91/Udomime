@@ -86,6 +86,7 @@ public class DogFragment extends Fragment {
         };
 
         mDogList.setAdapter(firebaseRecyclerAdapter);
+
     }
 
 }

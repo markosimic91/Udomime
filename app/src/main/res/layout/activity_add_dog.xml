@@ -1,90 +1,95 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+
+    <ImageButton
+        android:id="@+id/ibAddDog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_margin="20dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:background="@color/colorAccent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/add_btn" />
 
-        <EditText
-            android:id="@+id/etDogName"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:hint="Animal Name"/>
-        <EditText
-            android:id="@+id/etDogContact"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etDogName"
-            android:layout_marginTop="22dp"
-            android:hint="Contact"/>
+    <EditText
+        android:id="@+id/etDogName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibAddDog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/etNameMargin"
+        android:layout_marginLeft="@dimen/etMarginLeft"
+        android:layout_marginRight="@dimen/etMarginRight"
+        android:layout_marginStart="@dimen/etMarginStart"
+        android:layout_marginTop="@dimen/etMarginTop"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="@dimen/etPadding"
+        android:hint="@string/dog_name" />
 
-        <EditText
-            android:id="@+id/etDogDesription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_below="@id/etDogContact"
-            android:hint="Description:"/>
+    <EditText
+        android:id="@+id/etDogContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etDogName"
+        android:layout_alignStart="@+id/etDogName"
+        android:layout_below="@+id/etDogName"
+        android:layout_marginBottom="@dimen/etMarginBottom"
+        android:layout_marginEnd="@dimen/etNameMargin"
+        android:layout_marginLeft="@dimen/etMarginLeft"
+        android:layout_marginRight="@dimen/etMarginRight"
+        android:layout_marginTop="@dimen/etMarginTop"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/etPadding"
+        android:hint="@string/contact"/>
 
-        <TextView
-            android:id="@+id/tvDogPic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etDogDesription"
-            android:layout_marginTop="22dp"
-            android:text="Add animal picure:"/>
+    <EditText
+        android:id="@+id/etDogDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etDogContact"
+        android:layout_alignStart="@+id/etDogContact"
+        android:layout_below="@+id/etDogContact"
+        android:layout_marginBottom="@dimen/etMarginBottom"
+        android:layout_marginEnd="@dimen/etNameMargin"
+        android:layout_marginLeft="@dimen/etMarginLeft"
+        android:layout_marginRight="@dimen/etMarginRight"
+        android:background="@drawable/input"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/etPadding"
+        android:hint="@string/dog_description"/>
 
-        <ImageButton
-            android:id="@+id/ibAddDog"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/add"
-            android:layout_alignTop="@+id/tvDogPic"
-            android:layout_centerHorizontal="true" />
+    <fragment
+        android:id="@+id/GoogleMap"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/googleMapHeight"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_below="@id/etDogDescription"
+        tools:layout="@layout/activity_add_dog" />
 
-        <ImageView
-            android:id="@+id/ivDogImage"
-            android:layout_below="@id/ibAddDog"
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
 
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ivDogImage"
-            android:text="Location:"/>
+    <Button
+        android:id="@+id/bFinish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/GoogleMap"
+        android:background="@color/cardview_light_background"
+        android:layout_marginTop="@dimen/buttonMarginTop"
+        android:text="@string/finish"/>
 
-        <fragment
-            android:id="@+id/GoogleMap"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@id/tvLocation"
-            android:name="com.google.android.gms.maps.MapFragment"
-            tools:layout="@layout/activity_add_dog" />
-
-        <Button
-            android:id="@+id/bFinish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Finish"
-            android:layout_below="@+id/GoogleMap"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:id="@+id/Space"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/bFinish"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/Space"/>
-
-    </RelativeLayout>
+</RelativeLayout>
 </ScrollView>

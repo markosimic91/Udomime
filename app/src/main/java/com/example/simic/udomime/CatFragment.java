@@ -61,7 +61,6 @@ public class CatFragment extends Fragment {
             protected void populateViewHolder(CatAdapter.ViewHolder viewHolder, Cat model, int position) {
 
                 final String cat_key = getRef(position).getKey();
-                
 
                 viewHolder.tvCatName.setText(model.getmCatName());
                 viewHolder.tvCatDescription.setText(model.getmCatDescription());
@@ -71,7 +70,6 @@ public class CatFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
 
                         Intent singleCat = new Intent(getActivity(),SingleCat.class);
                         singleCat.putExtra("cat_id",cat_key);

@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvAnimalCard"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_margin="10dp"
-        card_view:cardCornerRadius="4dp"
-        android:elevation="15dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/ivCatPic"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/add_btn" />
 
-            <ImageView
-                android:id="@+id/ivCatPic"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/tvCatName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/listItemPadding"
+            android:paddingEnd="@dimen/listItemPadding"
+            android:paddingLeft="@dimen/listItemPadding"
+            android:paddingRight="@dimen/listItemPadding"
+            android:paddingStart="@dimen/listItemPadding"
+            android:textSize="@dimen/singleTxtSize"
+            android:textStyle="bold"
+            />
 
-            <TextView
-                android:id="@+id/tvCatName"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/ivCatPic"
-                android:padding="11dp"
-                android:layout_above="@+id/tvCatDescription"
-                android:text="Name:"/>
+        <TextView
+            android:id="@+id/tvCatContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/listItemPadding"
+            android:paddingEnd="@dimen/listItemPadding"
+            android:paddingLeft="@dimen/listItemPadding"
+            android:paddingRight="@dimen/listItemPadding"
+            android:paddingStart="@dimen/listItemPadding"
+            />
 
-            <TextView
-                android:id="@+id/tvCatContact"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_below="@id/ivCatPic"
-                android:layout_toRightOf="@id/tvCatName"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:padding="11dp"
-                android:text="Contact:"
-                />
-
-            <TextView
-                android:id="@+id/tvCatDescription"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/tvCatContact"
-                android:padding="11dp"
-                android:text="Description:"/>
+        <TextView
+            android:id="@+id/tvCatDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/listItemPadding"
+            android:paddingEnd="@dimen/listItemPadding"
+            android:paddingLeft="@dimen/listItemPadding"
+            android:paddingRight="@dimen/listItemPadding"
+            android:paddingStart="@dimen/listItemPadding"
+            />
 
 
+    </LinearLayout>
 
-        </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>
