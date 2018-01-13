@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 public class DogFragment extends Fragment {
 
-    public static final String TITLE = "Pas";
+    public static final String TITLE = "Dog";
     private static final String DOG = "Dog";
     private DatabaseReference mDogReference;
     private RecyclerView mDogList;
@@ -49,7 +49,6 @@ public class DogFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-
         final FirebaseRecyclerAdapter<Dog,DogAdapter.ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Dog, DogAdapter.ViewHolder>(
                 Dog.class,
                 R.layout.dog_item_list,
@@ -62,7 +61,6 @@ public class DogFragment extends Fragment {
 
                 final String dog_key = getRef(position).getKey();
 
-
                 viewHolder.tvDogName.setText(model.getmDogName());
                 viewHolder.tvDogDesription.setText(model.getmDogDescription());
                 viewHolder.tvDogContact.setText(model.getmDogContact());
@@ -71,13 +69,19 @@ public class DogFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
                         Intent singleDog = new Intent(getActivity(),SingleDog.class);
                         singleDog.putExtra("dog_id",dog_key);
                         startActivity(singleDog);
 
 
+                    }
+                });
+                    viewHolder.ibLeaveComment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent comment = new Intent(getActivity(),Chat.class);
+                            comment.putExtra("dog_comment",dog_key);
+                            startActivity(comment);
                     }
                 });
 

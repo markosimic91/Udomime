@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -19,12 +20,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +36,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,11 +66,12 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers;
     private FirebaseUser mCurrentUsers;
+    private GoogleMap.OnMapClickListener mCustomMapClickListener;
 
 
     GoogleMap mGoogleMap;
     MapFragment mMapFragment;
-    private GoogleMap.OnMapClickListener mCustomMapClickListener;
+    GeoFire mGeoFire;
 
 
     //region BindView
@@ -89,6 +95,7 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
         mAuth = FirebaseAuth.getInstance();
         mCurrentUsers = mAuth.getCurrentUser();
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUsers.getUid());
+        mGeoFire = new GeoFire(FirebaseDatabase.getInstance().getReference().child("Dog Location"));
 
         bFinish.setOnClickListener(this);
         this.googleMap();
@@ -119,10 +126,9 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
 
         final String name = etDogName.getText().toString();
-        final String desription = etDogDescription.getText().toString();
+        final String description = etDogDescription.getText().toString();
         final String contact = etDogContact.getText().toString();
-
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(desription) && !TextUtils.isEmpty(contact) && mImageUri != null){
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(contact) && mImageUri != null){
 
             mProgress.show();
 
@@ -140,7 +146,7 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             newDog.child("mDogName").setValue(name);
-                            newDog.child("mDogDescription").setValue(desription);
+                            newDog.child("mDogDescription").setValue(description);
                             newDog.child("mDogContact").setValue(contact);
                             newDog.child("mDogPicture").setValue(downloadUrl.toString());
                             newDog.child("mUid").setValue(mCurrentUsers.getUid());
@@ -155,20 +161,19 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
 
                                 }
                             });
+
                         }
+
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
+
                     });
-
-
                     mProgress.dismiss();
-
                 }
             });
-
 
         }else{
             mProgress.dismiss();
@@ -183,13 +188,16 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
         this.mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.GoogleMap);
         this.mMapFragment.getMapAsync(this);
         this.mCustomMapClickListener = new GoogleMap.OnMapClickListener() {
+
             @Override
             public void onMapClick(LatLng latLng) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                markerOptions.title("Im here");
-                markerOptions.position(latLng);
-                mGoogleMap.addMarker(markerOptions);
+
+                MarkerOptions marker = new MarkerOptions();
+                marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_place_black_24dp)) ;
+                marker.position(latLng);
+                marker.draggable(true);
+                mGoogleMap.addMarker(marker);
+
             }
         };
     }
@@ -211,6 +219,8 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
         this.mGoogleMap.setMyLocationEnabled(true);
 
     }
+
+
     //endregion
 
 
@@ -253,4 +263,6 @@ public class AddDog extends AppCompatActivity implements OnMapReadyCallback,Valu
     public void onClick(View v) {
 
     }
+
+
 }

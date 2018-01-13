@@ -52,17 +52,6 @@
                 android:layout_below="@id/tvCatContact"
                 />
 
-            <Button
-                android:id="@+id/bLeaveComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvCatDescription"
-                android:text="@string/leave_comment"
-                android:background="@color/cardview_light_background"
-                android:layout_margin="@dimen/commentButtonMagin"
-                android:padding="@dimen/commentBusttonPadding"/>
-
-
 
             <Button
                 android:id="@+id/bCatAdopt"

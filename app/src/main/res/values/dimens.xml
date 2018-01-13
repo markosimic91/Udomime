@@ -21,4 +21,5 @@
     <dimen name="commentButtonMagin">10dp</dimen>
     <dimen name="commentBusttonPadding">4dp</dimen>
     <dimen name="listItemPadding">15dp</dimen>
+    <dimen name="chatPadding">16dp</dimen>
 </resources>

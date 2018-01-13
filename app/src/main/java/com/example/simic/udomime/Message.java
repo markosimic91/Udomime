@@ -3,46 +3,48 @@ package com.example.simic.udomime;
 import java.util.Date;
 
 /**
- * Created by Simic on 29.12.2017..
+ * Created by Simic on 11.1.2018..
  */
 
 public class Message {
 
-    private String MsgText;
-    private String MsgUser;
-    private long MsgTime;
+    private String mMessageText;
+    private String mMessageUser;
+    private long mMessageTime;
 
-    public Message() {
+
+    public Message(String mMessageText, String mMessageUser) {
+        this.mMessageText = mMessageText;
+        this.mMessageUser = mMessageUser;
+
+        mMessageTime = new Date().getTime();
     }
 
-    public Message(String msgText, String msgUser) {
-        this.MsgText = msgText;
-        this.MsgUser = msgUser;
-
-        MsgTime = new Date().getTime();
+    public Message(){
     }
 
-    public String getMsgText() {
-        return MsgText;
+
+    public String getmMessageText() {
+        return mMessageText;
     }
 
-    public void setMsgText(String msgText) {
-        MsgText = msgText;
+    public void setmMessageText(String mMessageText) {
+        this.mMessageText = mMessageText;
     }
 
-    public String getMsgUser() {
-        return MsgUser;
+    public String getmMessageUser() {
+        return mMessageUser;
     }
 
-    public void setMsgUser(String msgUserM) {
-        MsgUser = msgUserM;
+    public void setmMessageUser(String mMessageUser) {
+        this.mMessageUser = mMessageUser;
     }
 
-    public long getMsgTime() {
-        return MsgTime;
+    public long getmMessageTime() {
+        return mMessageTime;
     }
 
-    public void setMsgTime(long msgTime) {
-        MsgTime = msgTime;
+    public void setmMessageTime(long mMessageTime) {
+        this.mMessageTime = mMessageTime;
     }
 }

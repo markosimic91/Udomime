@@ -51,17 +51,6 @@
         android:layout_below="@id/tvDogContact"
         />
 
-    <Button
-        android:id="@+id/bLeaveComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvDogDescription"
-        android:text="@string/leave_comment"
-        android:background="@color/cardview_light_background"
-        android:padding="@dimen/commentBusttonPadding"
-        android:layout_margin="@dimen/commentButtonMagin"/>
-
-
 
     <Button
         android:id="@+id/bDogAdopt"

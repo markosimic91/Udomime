@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 public class CatFragment extends Fragment {
 
-    public static final String TITLE = "Mačka";
+    public static final String TITLE = "Cat";
     private static final String CAT = "Cat";
     private DatabaseReference mCatReference;
     private RecyclerView mCatList;
@@ -75,7 +75,14 @@ public class CatFragment extends Fragment {
                         singleCat.putExtra("cat_id",cat_key);
                         startActivity(singleCat);
 
-
+                    }
+                });
+                viewHolder.ibLeaveComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent comment = new Intent(getActivity(), Chat.class);
+                        comment.putExtra("cat_comment",cat_key);
+                        startActivity(comment);
                     }
                 });
             }

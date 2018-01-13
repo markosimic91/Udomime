@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/ivDogPic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/add_btn" />
+        <ImageView
+            android:id="@+id/ivDogPic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/add_btn" />
 
         <TextView
             android:id="@+id/tvDogName"
@@ -29,8 +29,7 @@
             android:paddingRight="@dimen/listItemPadding"
             android:paddingStart="@dimen/listItemPadding"
             android:textSize="@dimen/singleTxtSize"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDogContact"
@@ -40,8 +39,7 @@
             android:paddingEnd="@dimen/listItemPadding"
             android:paddingLeft="@dimen/listItemPadding"
             android:paddingRight="@dimen/listItemPadding"
-            android:paddingStart="@dimen/listItemPadding"
-            />
+            android:paddingStart="@dimen/listItemPadding" />
 
         <TextView
             android:id="@+id/tvDogDescription"
@@ -51,8 +49,15 @@
             android:paddingEnd="@dimen/listItemPadding"
             android:paddingLeft="@dimen/listItemPadding"
             android:paddingRight="@dimen/listItemPadding"
-            android:paddingStart="@dimen/listItemPadding"
-            />
+            android:paddingStart="@dimen/listItemPadding" />
+
+        <ImageButton
+            android:id="@+id/ibLeaveComment"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@color/cardview_light_background"
+            android:padding="6dp"
+            android:src="@mipmap/ic_comment_black_24dp" />
 
 
     </LinearLayout>

@@ -33,7 +33,6 @@ public class SingleCat extends AppCompatActivity {
     @BindView(R.id.tvCatContact)TextView tvCatContact;
     @BindView(R.id.tvCatDescription)TextView tvCatDescription;
     @BindView(R.id.bCatAdopt) Button bCatAdopt;
-    @BindView(R.id.bLeaveComment) Button bLeaveComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +89,6 @@ public class SingleCat extends AppCompatActivity {
             }
         });
 
-    }
-
-    @OnClick(R.id.bLeaveComment)
-    public void leaveComment(){
-        Intent comm = new Intent(SingleCat.this,Chat.class);
-        startActivity(comm);
     }
 
 }

@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class SingleDog extends AppCompatActivity {
 
     private static final String DOG = "Dog";
-    private String mDog_key = null;
+    private String mDogKey = null;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
@@ -42,9 +42,9 @@ public class SingleDog extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child(DOG);
         mAuth = FirebaseAuth.getInstance();
 
-        mDog_key = getIntent().getExtras().getString("dog_id");
+        mDogKey = getIntent().getExtras().getString("dog_id");
 
-        mDatabase.child(mDog_key).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(mDogKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -77,7 +77,7 @@ public class SingleDog extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mDatabase.child(mDog_key).removeValue();
+                mDatabase.child(mDogKey).removeValue();
 
                 Toast.makeText(SingleDog.this, "Thank You!", Toast.LENGTH_SHORT).show();
                 Intent mainIntent = new Intent(SingleDog.this,MainActivity.class);

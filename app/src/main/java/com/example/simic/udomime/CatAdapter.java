@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class CatAdapter extends RecyclerView.Adapter<CatAdapter.ViewHolder>{
         @BindView(R.id.tvCatContact) TextView tvCatContact;
         @BindView(R.id.tvCatDescription) TextView tvCatDescription;
         @BindView(R.id.ivCatPic) ImageView ivCatPic;
+        @BindView(R.id.ibLeaveComment) ImageButton ibLeaveComment;
 
         public ViewHolder(View itemView) {
             super(itemView);

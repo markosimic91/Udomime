@@ -1,6 +1,5 @@
 package com.example.simic.udomime;
 
-import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,83 +7,82 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-import java.sql.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-
 public class Chat extends AppCompatActivity {
 
-    private FloatingActionButton bSendMessage;
-    private EditText etInputMsg;
-    private FirebaseListAdapter<Message> mAdapter;
+    private static final String COMMENTS = "Comments";
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.MessageInput) EditText MessageInput;
+    @BindView(R.id.lvMessages) ListView lvMessages;
 
+    private DatabaseReference mDatabasePush;
+    private String mDogComment;
+    private DatabaseReference mDatabaseDisplay;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        displayChatMessages();
+        ButterKnife.bind(this);
 
-        bSendMessage = (FloatingActionButton) findViewById(R.id.bSendMessage);
+        mDogComment = getIntent().getExtras().getString("dog_comment");
 
+        this.mDatabasePush = FirebaseDatabase.getInstance().getReference().child(COMMENTS).child(mDogComment);
 
-
-        bSendMessage.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                etInputMsg = (EditText) findViewById(R.id.etInputMsg);
-                FirebaseDatabase.getInstance().getReference().push()
-                        .setValue(new Message(etInputMsg.getText().toString(),
-                                FirebaseAuth.getInstance().
-                                        getCurrentUser().getDisplayName()));
+                mDatabasePush.push().setValue(new Message(MessageInput.getText().toString(),
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
-                etInputMsg.setText("");
+                MessageInput.setText("");
 
             }
-
         });
 
     }
 
-    private void displayChatMessages() {
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        ListView lvMessages = (ListView) findViewById(R.id.lvMessages);
+        mDatabaseDisplay = FirebaseDatabase.getInstance().getReference().child(COMMENTS);
 
-        mAdapter = new FirebaseListAdapter<Message>(
+        FirebaseListAdapter adapter = new FirebaseListAdapter<Message>(
                 Chat.this,
                 Message.class,
-                R.layout.message,
-                FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message_list_item,
+                mDatabaseDisplay) {
+
             @Override
             protected void populateView(View v, Message model, int position) {
 
-                TextView messagesText  = (TextView) v.findViewById(R.id.tvMessageText);
-                TextView messagesUser = (TextView) v.findViewById(R.id.tvMessageUser);
-                TextView messagesTime = (TextView) v.findViewById(R.id.tvMessageTime);
+                TextView messageUser = (TextView) v.findViewById(R.id.tvMessageUser);
+                TextView messageTime = (TextView) v.findViewById(R.id.tvMessageTime);
+                TextView messageText = (TextView) v.findViewById(R.id.tvMessageText);
 
-                messagesText.setText(model.getMsgText());
-                messagesUser.setText(model.getMsgUser());
-                messagesTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",model.getMsgTime()));
-
+                messageUser.setText(model.getmMessageUser());
+                messageText.setText(model.getmMessageText());
+                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",model.getmMessageTime()));
 
             }
-
         };
-        lvMessages.setAdapter(mAdapter);
+        lvMessages.setAdapter(adapter);
 
     }
 

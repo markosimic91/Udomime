@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder>{
         @BindView(R.id.tvDogDescription) TextView tvDogDesription;
         @BindView(R.id.tvDogContact) TextView tvDogContact;
         @BindView(R.id.ivDogPic) ImageView ivDogPic;
+        @BindView(R.id.ibLeaveComment) ImageButton ibLeaveComment;
 
         public ViewHolder(View itemView) {
             super(itemView);

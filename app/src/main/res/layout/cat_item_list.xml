@@ -54,6 +54,15 @@
             android:paddingStart="@dimen/listItemPadding"
             />
 
+        <ImageButton
+            android:id="@+id/ibLeaveComment"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/ic_comment_black_24dp"
+            android:padding="6dp"
+            android:background="@color/cardview_light_background"
+            />
+
 
     </LinearLayout>
 
