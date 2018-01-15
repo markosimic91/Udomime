@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rlActivityChat"
-    tools:context="com.example.simic.udomime.Chat"
+    tools:context="com.example.simic.udomime.CatChat"
     android:paddingBottom="@dimen/chatPadding"
     android:paddingLeft="@dimen/chatPadding"
     android:paddingRight="@dimen/chatPadding"
@@ -39,7 +39,7 @@
             android:id="@+id/MessageInput"/>
 
     </android.support.design.widget.TextInputLayout>
-    
+
     <ListView
         android:id="@+id/lvMessages"
         android:layout_alignParentTop="true"
@@ -53,7 +53,6 @@
         android:layout_alignParentLeft="true">
 
     </ListView>
-
 
 
 </RelativeLayout>

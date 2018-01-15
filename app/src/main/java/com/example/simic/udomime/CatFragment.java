@@ -80,7 +80,7 @@ public class CatFragment extends Fragment {
                 viewHolder.ibLeaveComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent comment = new Intent(getActivity(), Chat.class);
+                        Intent comment = new Intent(getActivity(), CatChat.class);
                         comment.putExtra("cat_comment",cat_key);
                         startActivity(comment);
                     }

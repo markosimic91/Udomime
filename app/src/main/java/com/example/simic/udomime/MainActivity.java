@@ -93,12 +93,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(login);
                 return true;
             case R.id.menu_addCat:
-                Intent addCat = new Intent(MainActivity.this,AddCat.class);
-                startActivity(addCat);
+                if(mAuth != null) {
+
+                    Intent addCat = new Intent(MainActivity.this, AddCat.class);
+                    startActivity(addCat);
+
+                }else{
+
+                    Toast.makeText(this, "Please login in!", Toast.LENGTH_SHORT).show();
+
+                }
                 return true;
             case R.id.menu_addDog:
+                if (mAuth != null){
+
                 Intent addDog = new Intent(MainActivity.this,AddDog.class);
                 startActivity(addDog);
+
+                }else {
+
+                    Toast.makeText(this, "Please login in!", Toast.LENGTH_SHORT).show();
+
+                }
                 return true;
             case R.id.menu_logout:
                 logout();
